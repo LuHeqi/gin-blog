@@ -2,38 +2,39 @@
 ### 获取认证token
 GET http://127.0.0.1:8080/auth?username=test&password=test123456
 
+> {%
+client.log("====="+response.body.data.token)
+client.global.set("auth_token", response.body.data.token);
+%}
+
 ### 新增标签
 POST http://localhost:8080/api/v1/tags?name=2&state=1&created_by=test
+Authorization: {{auth_token}}
 
 ### 获取标签
 GET http://localhost:8080/api/v1/tags?name=1&state=1&created_by=test
+Authorization: {{auth_token}}
 
 
 ### add articles
 POST http://127.0.0.1:8080/api/v1/articles?tag_id=1&title=test1&desc=test-desc&content=test-content&created_by=test-created&state=1
+Authorization: {{auth_token}}
 
 ### list articles
 GET http://127.0.0.1:8080/api/v1/articles
+Authorization: {{auth_token}}
 
 ### get article
-GET http://127.0.0.1:8080/api/v1/articles/1?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJwYXNzd29yZCI6InRlc3QxMjM0NTYiLCJleHAiOjE2NTY4NTIxODgsImlzcyI6Imdpbi1ibG9nIn0.pkekdlGRyl6mA9ocuF6kPAHuSADOYK5_EC6JUqxdEWI
-
+GET http://127.0.0.1:8080/api/v1/articles/1?token=
+Authorization: {{auth_token}}
 ### PUT article
 PUT http://127.0.0.1:8080/api/v1/articles/1?tag_id=1&title=test-edit1&desc=test-desc-edit&content=test-content-edit&modified_by=test-created-edit&state=0
+Authorization: {{auth_token}}
 
 ### delete article
 DELETE http://127.0.0.1:8080/api/v1/articles/1
+Authorization: {{auth_token}}
 
 
 
-
-### Send POST request with json body
-POST http://localhost:8095/user/Register
-Content-Type: application/json
-
-{
-  "name": "bill",
-  "pid": 8
-
-}
 

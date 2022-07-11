@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"gin-blog/models"
 	"gin-blog/pkg/setting"
 	"gin-blog/routers"
 	_ "github.com/gin-gonic/gin"
@@ -14,12 +15,15 @@ import (
 )
 
 func main() {
+	setting.Setup()
+	models.Setup()
+
 	router := routers.InitRouter()
 	srv := &http.Server{
-		Addr:           fmt.Sprintf(":%d", setting.HTTPPort),
+		Addr:           fmt.Sprintf(":%d", setting.ServerSetting.HttpPort),
 		Handler:        router,
-		ReadTimeout:    setting.ReadTimeout,
-		WriteTimeout:   setting.WriteTimeout,
+		ReadTimeout:    setting.ServerSetting.ReadTimeout,
+		WriteTimeout:   setting.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
 	// 这样写就可以了，下面所有代码（go1.8+）是为了优雅处理重启等动作。
