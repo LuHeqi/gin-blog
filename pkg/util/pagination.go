@@ -10,7 +10,7 @@ func GetPage(c *gin.Context) int {
 	startIndex := 0
 	page, _ := com.StrTo(c.Query("page")).Int()
 	if page > 0 {
-		startIndex = (page - 1) * setting.PageSize
+		startIndex = (page - 1) * setting.AppSetting.PageSize
 	}
 	return startIndex
 }

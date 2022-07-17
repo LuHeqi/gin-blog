@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gin-blog/models"
+	"gin-blog/pkg/logging"
 	"gin-blog/pkg/setting"
 	"gin-blog/routers"
 	_ "github.com/gin-gonic/gin"
@@ -17,6 +18,7 @@ import (
 func main() {
 	setting.Setup()
 	models.Setup()
+	logging.Setup()
 
 	router := routers.InitRouter()
 	srv := &http.Server{

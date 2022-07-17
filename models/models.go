@@ -2,10 +2,10 @@ package models
 
 import (
 	"fmt"
+	"gin-blog/pkg/logging"
 	"gin-blog/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"log"
 	"time"
 )
 
@@ -26,7 +26,7 @@ func Setup() {
 			setting.DatabaseSetting.Host,
 			setting.DatabaseSetting.Name))
 	if err != nil {
-		log.Println(err)
+		logging.Info(err)
 	}
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return setting.DatabaseSetting.TablePrefix + defaultTableName

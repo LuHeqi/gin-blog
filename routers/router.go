@@ -4,23 +4,28 @@ import (
 	_ "gin-blog/docs"
 	"gin-blog/middleware"
 	"gin-blog/pkg/setting"
+	"gin-blog/pkg/upload"
 	"gin-blog/routers/api"
 	v1 "gin-blog/routers/api/v1"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"net/http"
 )
 
 func InitRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	gin.SetMode(setting.RunMode)
+	gin.SetMode(setting.ServerSetting.RunMode)
 
 	r.Static("/html", "./public")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// 前端直接访问静态资源文件（后期可改为前后端分离项目）
+	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 
 	r.GET("/auth", api.GetAuth)
+	r.POST("/upload", api.UploadImage)
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(middleware.JWT())
 	{
